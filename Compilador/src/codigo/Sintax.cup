@@ -1,0 +1,45 @@
+package codigo;
+
+import java_cup.runtime.Symbol;
+
+parser code
+{:
+    private Symbol s;
+    
+    public void syntax_error(Symbol s){
+        this.s = s;
+    }
+
+    public Symbol getS(){
+        return this.s;
+}
+:};
+
+terminal Entero, Real, Cadena, Boleano, Nulo, Si, Entonces, Sino, Devolver, Verdadero, Falso, Desde,
+    Mientras, Incrementar, Decrementar, Hacer, Escribir, Clase, Extiende, Incluir, Propiedades, Metodos,
+    Publicas, Privadas, Protegidas, Principal, Eliminar, Instanciar, Constructor, Destructor, Igual, Suma,
+    Resta, Multiplicacion, Division, Modulo, Exponenciacion, Incremento, Decremento, Comparador, Diferente,
+    MenorIgual, MayorIgual, Mayor, Menor, And, Or, DosPuntos, PuntoComa, ParentesisA, ParentesisC, CorcheteA,
+    CorcheteC, LlaveA, LlaveC, Coma, Punto, Identificador, IdClase, NumEntero, NumReal, CadenaT, Tabulador, 
+    Comillas, Linea, ERROR;
+
+non terminal CODIGO, INBIBLIOTECAS, DECCLASFUN, MAIN, DCLASES, DFUNCION, PROPIEDADES, DECLARACION, DCONSTRUCTOR, DDESTRUCTOR, UFUNCION
+;
+
+start with CODIGO;
+
+CODIGO ::= INBIBLIOTECAS DECCLASFUN MAIN
+;
+INBIBLIOTECAS ::= 
+    Incluir CadenaT |
+    Incluir CadenaT INBIBLIOTECAS
+;
+DECCLASFUN ::=
+    DCLASES |
+    DFUNCION |
+    DCLASES DECCLASFUN |
+    DFUNCION DECCLASFUN
+;
+DCLASES ::= 
+    Clase IdClase Propiedades PROPIEDADES DosPuntos DECLARACION Metodos PROPIEDADES DosPuntos DCONSTRUCTOR DDESTRUCTOR UFUNCION
+;

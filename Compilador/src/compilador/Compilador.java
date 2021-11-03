@@ -7,7 +7,7 @@ package compilador;
 
 /**
  *
- * @author Usuario 1
+ * @author Laura
  */
 public class Compilador {
 
