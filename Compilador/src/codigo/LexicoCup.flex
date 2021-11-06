@@ -90,7 +90,7 @@ destructor {return new Symbol(sym.Destructor, yychar, yyline, yytext());}
 "]" {return new Symbol(sym.CorcheteC, yychar, yyline, yytext());} 
 "{" {return new Symbol(sym.LlaveA, yychar, yyline, yytext());} 
 "}" {return new Symbol(sym.LlaveC, yychar, yyline, yytext());} 
-"," {return new Symbol(sym.Coma, yychar, yyline, yytext());}
+",." {return new Symbol(sym.Coma, yychar, yyline, yytext());}
 
 
 /*Numeros, Identificadores y Cadenas*/

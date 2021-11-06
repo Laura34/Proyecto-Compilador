@@ -23,23 +23,55 @@ terminal Entero, Real, Cadena, Boleano, Nulo, Si, Entonces, Sino, Devolver, Verd
     CorcheteC, LlaveA, LlaveC, Coma, Punto, Identificador, IdClase, NumEntero, NumReal, CadenaT, Tabulador, 
     Comillas, Linea, ERROR;
 
-non terminal CODIGO, INBIBLIOTECAS, DECCLASFUN, MAIN, DCLASES, DFUNCION, PROPIEDADES, DECLARACION, DCONSTRUCTOR, DDESTRUCTOR, UFUNCION
+non terminal CODIGO, DECLARACION_NUM, VAR, TIPO_N, VALOR_N, DECLARACION_CADENA
+;
+non terminal DECLARACION, ASIGNACION
 ;
 
 start with CODIGO;
 
-CODIGO ::= INBIBLIOTECAS DECCLASFUN MAIN
+CODIGO ::=
+    DECLARACION |
+    ASIGNACION |
+    DECLARACION CODIGO |
+    ASIGNACION CODIGO 
 ;
-INBIBLIOTECAS ::= 
-    Incluir CadenaT |
-    Incluir CadenaT INBIBLIOTECAS
+
+DECLARACION ::=
+    DECLARACION_NUM |
+    DECLARACION_CADENA
 ;
-DECCLASFUN ::=
-    DCLASES |
-    DFUNCION |
-    DCLASES DECCLASFUN |
-    DFUNCION DECCLASFUN
+DECLARACION_CADENA ::= 
+    Cadena VAR PuntoComa |
+    Cadena VAR |
+    Cadena VAR Igual VALOR_N PuntoComa |
+    Cadena VAR Igual VALOR_N |
+    Cadena VAR Igual CadenaT PuntoComa |
+    Cadena VAR Igual CadenaT
 ;
-DCLASES ::= 
-    Clase IdClase Propiedades PROPIEDADES DosPuntos DECLARACION Metodos PROPIEDADES DosPuntos DCONSTRUCTOR DDESTRUCTOR UFUNCION
+DECLARACION_NUM ::= 
+    TIPO_N VAR PuntoComa |
+    TIPO_N VAR |
+    TIPO_N VAR Igual VALOR_N PuntoComa |
+    TIPO_N VAR Igual VALOR_N
+;
+VAR ::=
+    Identificador |
+    Identificador Coma VAR
+;
+TIPO_N ::=
+    Entero |
+    Real |
+    Boleano
+;
+VALOR_N ::=
+    NumEntero |
+    NumReal |
+    Verdadero |
+    Falso
+;
+
+ASIGNACION ::=
+    VAR Igual VALOR_N PuntoComa |
+    VAR Igual VALOR_N
 ;

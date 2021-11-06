@@ -82,7 +82,8 @@ destructor {lexeme=yytext(); return Destructor;}
 "]" {lexeme=yytext();return CorcheteC;} 
 "{" {lexeme=yytext();return LlaveA;} 
 "}" {lexeme=yytext();return LlaveC;} 
-"," {lexeme=yytext();return Coma;}
+/*La coma (,) no es un metacaracter en regex, JFlex no la reconoce cuando esta sola*/
+",." {lexeme=yytext();return Coma;}
 
 /*Numeros, Identificadores y Cadenas*/
 {Numero} {lexeme=yytext();return NumEntero;}
