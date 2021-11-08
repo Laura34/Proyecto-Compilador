@@ -34,6 +34,7 @@ incrementar {lexeme=yytext(); return Incrementar;}
 decrementar {lexeme=yytext(); return Decrementar;}
 hacer {lexeme=yytext(); return Hacer;}
 escribir {lexeme=yytext(); return Escribir;}
+leer {lexeme=yytext(); return Leer;}
 clase {lexeme=yytext(); return Clase;}
 extiende {lexeme=yytext(); return Extiende;}
 incluir {lexeme=yytext(); return Incluir;}

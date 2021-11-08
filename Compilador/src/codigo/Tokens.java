@@ -28,6 +28,7 @@ public enum Tokens {
     Decrementar,
     Hacer,
     Escribir,
+    Leer,
     Clase,
     Extiende,
     Incluir,

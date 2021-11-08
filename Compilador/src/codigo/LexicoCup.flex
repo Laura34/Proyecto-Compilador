@@ -43,6 +43,7 @@ incrementar {return new Symbol(sym.Incrementar, yychar, yyline, yytext());}
 decrementar {return new Symbol(sym.Decrementar, yychar, yyline, yytext());}
 hacer {return new Symbol(sym.Hacer, yychar, yyline, yytext());}
 escribir {return new Symbol(sym.Escribir, yychar, yyline, yytext());}
+leer {return new Symbol(sym.Leer, yychar, yyline, yytext());}
 clase {return new Symbol(sym.Clase, yychar, yyline, yytext());}
 extiende {return new Symbol(sym.Extiende, yychar, yyline, yytext());}
 incluir {return new Symbol(sym.Incluir, yychar, yyline, yytext());}

@@ -16,16 +16,17 @@ parser code
 :};
 
 terminal Entero, Real, Cadena, Boleano, Nulo, Si, Entonces, Sino, Devolver, Verdadero, Falso, Desde,
-    Mientras, Incrementar, Decrementar, Hacer, Escribir, Clase, Extiende, Incluir, Propiedades, Metodos,
+    Mientras, Incrementar, Decrementar, Hacer, Escribir, Leer, Clase, Extiende, Incluir, Propiedades, Metodos,
     Publicas, Privadas, Protegidas, Principal, Eliminar, Instanciar, Constructor, Destructor, Igual, Suma,
     Resta, Multiplicacion, Division, Modulo, Exponenciacion, Incremento, Decremento, Comparador, Diferente,
     MenorIgual, MayorIgual, Mayor, Menor, And, Or, DosPuntos, PuntoComa, ParentesisA, ParentesisC, CorcheteA,
     CorcheteC, LlaveA, LlaveC, Coma, Punto, Identificador, IdClase, NumEntero, NumReal, CadenaT, Tabulador, 
     Comillas, Linea, ERROR;
 
-non terminal CODIGO, DECLARACION_NUM, VAR, TIPO_N, VALOR_N, DECLARACION_CADENA
+non terminal CODIGO, DECLARACION_NUM, VAR, TIPO_N, VALOR_N, DECLARACION_CADENA, OPERANDO, OPERANDO_LOGICO, E_S, SAL,
+    OPERANDO_CONDICION 
 ;
-non terminal DECLARACION, ASIGNACION
+non terminal DECLARACION, ASIGNACION, OPERACION, OPERACION_LOGICA, CON_CADENAS, CONDICION
 ;
 
 start with CODIGO;
@@ -34,7 +35,11 @@ CODIGO ::=
     DECLARACION |
     ASIGNACION |
     DECLARACION CODIGO |
-    ASIGNACION CODIGO 
+    ASIGNACION CODIGO |
+    E_S |
+    E_S CODIGO |
+    CONDICION |
+    CONDICION CODIGO 
 ;
 
 DECLARACION ::=
@@ -73,5 +78,93 @@ VALOR_N ::=
 
 ASIGNACION ::=
     VAR Igual VALOR_N PuntoComa |
-    VAR Igual VALOR_N
+    VAR Igual VALOR_N |
+    VAR Igual CadenaT PuntoComa |
+    VAR Igual CadenaT |
+    VAR Igual OPERACION |
+    VAR Igual OPERACION_LOGICA |
+    VAR Igual CONDICION |
+    VAR Igual CON_CADENAS |
+    VAR Igual OPERACION PuntoComa |
+    VAR Igual OPERACION_LOGICA PuntoComa |
+    VAR Igual CONDICION PuntoComa |
+    VAR Igual Incremento Identificador PuntoComa |
+    VAR Igual Identificador Incremento PuntoComa |
+    VAR Igual Decremento Identificador PuntoComa |
+    VAR Igual Identificador Decremento PuntoComa |
+    VAR Igual Incremento Identificador |
+    VAR Igual Identificador Incremento |
+    VAR Igual Decremento Identificador |
+    VAR Igual Identificador Decremento
+;
+
+CON_CADENAS ::=
+CadenaT Suma CON_CADENAS |
+CadenaT Suma CadenaT
+;
+
+OPERACION ::=
+VALOR_N OPERANDO OPERACION |
+Identificador OPERANDO OPERACION |
+VALOR_N OPERANDO VALOR_N |
+VALOR_N OPERANDO Identificador |
+Identificador OPERANDO VALOR_N |
+Identificador OPERANDO Identificador |
+VALOR_N OPERANDO ParentesisA OPERACION ParentesisC |
+Identificador OPERANDO ParentesisA OPERACION ParentesisC
+;
+
+OPERACION_LOGICA ::=
+Identificador OPERANDO_LOGICO OPERACION_LOGICA |
+Identificador OPERANDO_LOGICO Identificador |
+Identificador OPERANDO_LOGICO ParentesisA OPERACION_LOGICA ParentesisC
+;
+
+OPERANDO ::=
+Suma |
+Resta |
+Multiplicacion |
+Division |
+Modulo |
+Exponenciacion 
+;
+
+OPERANDO_LOGICO ::=
+And |
+Or
+;
+
+E_S ::=
+Escribir SAL |
+Leer Identificador
+;
+
+SAL ::=
+Identificador |
+VALOR_N |
+CadenaT |
+Identificador Coma SAL |
+VALOR_N Coma SAL |
+CadenaT Coma SAL
+;
+
+CONDICION ::=
+VALOR_N OPERANDO_CONDICION VALOR_N |
+VALOR_N OPERANDO_CONDICION Identificador |
+Identificador OPERANDO_CONDICION Identificador |
+Identificador OPERANDO_CONDICION VALOR_N |
+
+VALOR_N OPERANDO_CONDICION VALOR_N OPERANDO_LOGICO CONDICION |
+VALOR_N OPERANDO_CONDICION Identificador OPERANDO_LOGICO CONDICION |
+Identificador OPERANDO_CONDICION Identificador OPERANDO_LOGICO CONDICION |
+Identificador OPERANDO_CONDICION VALOR_N OPERANDO_LOGICO CONDICION 
+;
+
+OPERANDO_CONDICION ::=
+Comparador |
+Diferente |
+MenorIgual |
+MayorIgual |
+Mayor |
+Menor
 ;
