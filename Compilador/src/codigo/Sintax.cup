@@ -24,12 +24,17 @@ terminal Entero, Real, Cadena, Boleano, Nulo, Si, Entonces, Sino, Devolver, Verd
     Comillas, Linea, ERROR;
 
 non terminal CODIGO, DECLARACION_NUM, VAR, TIPO_N, VALOR_N, DECLARACION_CADENA, OPERANDO, OPERANDO_LOGICO, E_S, SAL,
-    OPERANDO_CONDICION 
+    OPERANDO_CONDICION, SIG_CON, COMPARA, CODIGO_IT, DECLARACION_FUNCION, ARGUMENTO 
 ;
-non terminal DECLARACION, ASIGNACION, OPERACION, OPERACION_LOGICA, CON_CADENAS, CONDICION
+non terminal PROGRAMA, DECLARACION, ASIGNACION, OPERACION, OPERACION_LOGICA, CON_CADENAS, CONDICION,
+SELECTIVA, ITERATIVA_DESDE, ITERATIVA_HACER, BIBLIOTECAS, FUNCIONESF, PRO_PRINCIPAL
 ;
 
-start with CODIGO;
+start with PROGRAMA;
+
+PROGRAMA ::=
+    BIBLIOTECAS FUNCIONESF Punto PRO_PRINCIPAL 
+;
 
 CODIGO ::=
     DECLARACION |
@@ -38,8 +43,12 @@ CODIGO ::=
     ASIGNACION CODIGO |
     E_S |
     E_S CODIGO |
-    CONDICION |
-    CONDICION CODIGO 
+    SELECTIVA |
+    SELECTIVA CODIGO |
+    ITERATIVA_DESDE |
+    ITERATIVA_DESDE CODIGO |
+    ITERATIVA_HACER |
+    ITERATIVA_HACER CODIGO 
 ;
 
 DECLARACION ::=
@@ -61,8 +70,7 @@ DECLARACION_NUM ::=
     TIPO_N VAR Igual VALOR_N
 ;
 VAR ::=
-    Identificador |
-    Identificador Coma VAR
+    Identificador
 ;
 TIPO_N ::=
     Entero |
@@ -149,15 +157,13 @@ CadenaT Coma SAL
 ;
 
 CONDICION ::=
-VALOR_N OPERANDO_CONDICION VALOR_N |
-VALOR_N OPERANDO_CONDICION Identificador |
-Identificador OPERANDO_CONDICION Identificador |
-Identificador OPERANDO_CONDICION VALOR_N |
+COMPARA OPERANDO_CONDICION COMPARA |
+COMPARA OPERANDO_CONDICION COMPARA OPERANDO_LOGICO CONDICION
+;
 
-VALOR_N OPERANDO_CONDICION VALOR_N OPERANDO_LOGICO CONDICION |
-VALOR_N OPERANDO_CONDICION Identificador OPERANDO_LOGICO CONDICION |
-Identificador OPERANDO_CONDICION Identificador OPERANDO_LOGICO CONDICION |
-Identificador OPERANDO_CONDICION VALOR_N OPERANDO_LOGICO CONDICION 
+COMPARA ::=
+VALOR_N |
+Identificador 
 ;
 
 OPERANDO_CONDICION ::=
@@ -167,4 +173,59 @@ MenorIgual |
 MayorIgual |
 Mayor |
 Menor
+;
+
+SELECTIVA ::=
+Si CONDICION Entonces Tabulador Devolver VALOR_N |
+Si CONDICION Entonces Tabulador Devolver VALOR_N SIG_CON
+;
+
+SIG_CON ::=
+Sino CONDICION Entonces Tabulador Devolver VALOR_N |
+Sino CONDICION Entonces Tabulador Devolver VALOR_N SIG_CON |
+Sino Devolver VALOR_N
+;
+
+ITERATIVA_DESDE ::=
+Desde Identificador Mientras CONDICION Hacer CODIGO_IT |
+Desde DECLARACION Mientras CONDICION Hacer CODIGO_IT |
+Desde Identificador Mientras CONDICION Decrementar NumEntero Hacer CODIGO_IT |
+Desde DECLARACION Mientras CONDICION Decrementar NumEntero Hacer CODIGO_IT |
+Desde Identificador Mientras CONDICION Incrementar NumEntero Hacer CODIGO_IT |
+Desde DECLARACION Mientras CONDICION Incrementar NumEntero Hacer CODIGO_IT
+;
+
+CODIGO_IT ::=
+    Tabulador E_S |
+    Tabulador ASIGNACION |
+    Tabulador E_S CODIGO_IT |
+    Tabulador ASIGNACION CODIGO_IT 
+;
+ITERATIVA_HACER ::=
+Hacer CODIGO_IT Mientras CONDICION 
+;
+
+DECLARACION_FUNCION ::=
+    DECLARACION ParentesisA ARGUMENTO ParentesisC Tabulador Devolver OPERACION |
+    DECLARACION ParentesisA ARGUMENTO ParentesisC Tabulador Devolver Identificador ParentesisA SAL ParentesisC |
+    DECLARACION ParentesisA ParentesisC Tabulador Devolver OPERACION |
+    DECLARACION ParentesisA ParentesisC Tabulador Devolver Identificador ParentesisA SAL ParentesisC
+;
+ARGUMENTO ::=
+    DECLARACION |
+    DECLARACION Coma ARGUMENTO
+;
+BIBLIOTECAS ::=
+Incluir CadenaT|
+Incluir CadenaT BIBLIOTECAS
+;
+
+FUNCIONESF ::=
+    DECLARACION_FUNCION |
+    DECLARACION_FUNCION FUNCIONESF 
+;
+
+PRO_PRINCIPAL ::=
+ Entero Principal ParentesisA ARGUMENTO ParentesisC CODIGO Devolver NumEntero|
+ Entero Principal ParentesisA ParentesisC CODIGO Devolver NumEntero|
 ;
