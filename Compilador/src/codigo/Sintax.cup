@@ -33,7 +33,9 @@ SELECTIVA, ITERATIVA_DESDE, ITERATIVA_HACER, BIBLIOTECAS, FUNCIONESF, PRO_PRINCI
 start with PROGRAMA;
 
 PROGRAMA ::=
-    BIBLIOTECAS FUNCIONESF Punto PRO_PRINCIPAL 
+    BIBLIOTECAS FUNCIONESF Punto PRO_PRINCIPAL |
+    FUNCIONESF Punto PRO_PRINCIPAL |
+    PRO_PRINCIPAL
 ;
 
 CODIGO ::=
@@ -144,7 +146,9 @@ Or
 
 E_S ::=
 Escribir SAL |
-Leer Identificador
+Leer Identificador |
+Escribir SAL PuntoComa |
+Leer Identificador PuntoComa
 ;
 
 SAL ::=
@@ -177,13 +181,16 @@ Menor
 
 SELECTIVA ::=
 Si CONDICION Entonces Tabulador Devolver VALOR_N |
+Si CONDICION Entonces Tabulador Devolver VALOR_N PuntoComa|
 Si CONDICION Entonces Tabulador Devolver VALOR_N SIG_CON
 ;
 
 SIG_CON ::=
 Sino CONDICION Entonces Tabulador Devolver VALOR_N |
+Sino CONDICION Entonces Tabulador Devolver VALOR_N PuntoComa|
 Sino CONDICION Entonces Tabulador Devolver VALOR_N SIG_CON |
-Sino Devolver VALOR_N
+Sino Devolver VALOR_N |
+Sino Devolver VALOR_N PuntoComa
 ;
 
 ITERATIVA_DESDE ::=
@@ -207,9 +214,13 @@ Hacer CODIGO_IT Mientras CONDICION
 
 DECLARACION_FUNCION ::=
     DECLARACION ParentesisA ARGUMENTO ParentesisC Tabulador Devolver OPERACION |
+    DECLARACION ParentesisA ARGUMENTO ParentesisC Tabulador Devolver OPERACION PuntoComa|
     DECLARACION ParentesisA ARGUMENTO ParentesisC Tabulador Devolver Identificador ParentesisA SAL ParentesisC |
+    DECLARACION ParentesisA ARGUMENTO ParentesisC Tabulador Devolver Identificador ParentesisA SAL ParentesisC PuntoComa|
     DECLARACION ParentesisA ParentesisC Tabulador Devolver OPERACION |
-    DECLARACION ParentesisA ParentesisC Tabulador Devolver Identificador ParentesisA SAL ParentesisC
+    DECLARACION ParentesisA ParentesisC Tabulador Devolver OPERACION PuntoComa |
+    DECLARACION ParentesisA ParentesisC Tabulador Devolver Identificador ParentesisA SAL ParentesisC |
+    DECLARACION ParentesisA ParentesisC Tabulador Devolver Identificador ParentesisA SAL ParentesisC PuntoComa
 ;
 ARGUMENTO ::=
     DECLARACION |
@@ -228,4 +239,6 @@ FUNCIONESF ::=
 PRO_PRINCIPAL ::=
  Entero Principal ParentesisA ARGUMENTO ParentesisC CODIGO Devolver NumEntero|
  Entero Principal ParentesisA ParentesisC CODIGO Devolver NumEntero|
+ Entero Principal ParentesisA ARGUMENTO ParentesisC CODIGO Devolver NumEntero PuntoComa|
+ Entero Principal ParentesisA ParentesisC CODIGO Devolver NumEntero PuntoComa
 ;

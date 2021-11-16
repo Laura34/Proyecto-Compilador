@@ -1,0 +1,66 @@
+incluir " impresion . loop "
+incluir " lectura . loop "
+
+entero sumar()
+	devolver a+b
+
+real sumar(entero a,. entero b)
+	devolver a+b;
+.
+entero Principal (cadena args)
+cadena x1 = 3
+entero x, y = 3;
+real x = 3
+boleano x = 3
+
+//Comentario
+
+cadena x = 3.5
+entero x = 3.5
+real x = 3.5
+boleano x = 3.5
+
+cadena x = falso
+entero x = verdadero
+real x = falso;
+boleano x = verdadero
+cadena x = "texto"
+
+ejemplo = 5 + 2 +3
+ejemplo = 5 + c +3
+ejemplo = a AND b
+
+ejemplo = "t1" + "t2"
+ejemplo = ++a
+ejemplo = --a
+ejemplo = a++;
+ejemplo = a--
+ejemplo = a< b
+
+escribir a,.b,. "hola"
+escribir "hola";
+leer ejemplo;
+leer otro
+
+desde entero i = 32 mientras a<2 incrementar 2 hacer
+	x = x + 2;
+	escribir "hola"
+
+desde i mientras a<2 decrementar 2 hacer
+	x = x + 2;
+	escribir "hola"
+
+desde entero i = 32 mientras a<2 hacer
+	x = x + 2;
+	escribir "hola"
+
+desde i mientras a<2 hacer
+	x = x + 2;
+	escribir "hola"
+
+hacer
+	a = 5+b
+	b = b%4
+mientras b<10
+
+devolver 0
