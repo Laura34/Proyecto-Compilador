@@ -1,0 +1,36 @@
+%type java_cup.runtime.Symbol
+%class Lexico
+%type Tokens
+L1 = [a-z_]+
+L2 = [A-Z_]+
+NumeroM0 = [1-9][0-9]*
+Numero = (0|{NumeroM0})(\.(0|{NumeroM0}[1-9]))?
+Real = {Numero}("."[0-9]*[1-9]+)?
+espacio=[ ,\s,\r]+
+Tab = \t|{espacio}{4}
+Cadena   = \".*\"
+%{
+    public String lexeme;
+%}
+
+%init{
+    
+    if(direccion.isEmpty())
+        this.direccion="tokens.txt";
+    else
+        this.direccion=direccion+File.separator+"tokens.txt";
+    bw = new BufferedWriter(new FileWriter(this.direccion));
+%init}
+%initthrow IOException
+%ctorarg String direccion
+%unicode
+%line
+%column
+%cup
+%eofval{
+  bw.close();
+  System.out.println("Fin de archivo encontrado");
+  return new java_cup.runtime.Symbol(sym.EOF);
+%eofval}
+%eofclose
+%%
