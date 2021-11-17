@@ -1,0 +1,149 @@
+package codigo;
+import static codigo.Tokens.*;
+import java_cup.runtime.Symbol;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.File;
+import java_cup.runtime.*;
+import static codigo.sym.*;
+ 
+%%
+%class Lexico
+%{
+    int tab = 0;
+    BufferedWriter bw;
+    public String direccion;
+    private int getTab(){
+        int tabaux = tab;
+        tab = 0;
+        return tabaux;
+   }
+   private void escribir(int tipo,String f) throws IOException{
+        switch(tipo){
+        case 1: bw.write("PALABRA RESERVADA "+f); break;
+        case 2: bw.write("OPERADOR "+f); break;
+        case 3: bw.write("SIGNO "+f);break;
+        case 4: bw.write("CADENA "+f);break;
+        case 5: bw.write("COMENTARIO "+f);break;
+        case 6: bw.write("NUMERO"+f);break;
+        case 7: bw.write("IDENTFICADOR"+f);break;
+        case 8: bw.write("ARCHIVO EXCEL"+f);break;
+        case 9: bw.write("ARCHIVO OPENOFFICE"+f);break;
+        case 10: bw.write("ARCHIVO OPENOFFICE"+f);break;
+        }
+        bw.newLine();
+   }
+%}
+
+%type java_cup.runtime.Symbol
+%class Lexico
+%type Tokens
+L1 = [a-z_]+
+L2 = [A-Z_]+
+NumeroM0 = [1-9][0-9]*
+Numero = (0|{NumeroM0})(\.(0|{NumeroM0}[1-9]))?
+Real = {Numero}("."[0-9]*[1-9]+)?
+espacio=[ ,\s,\r]+
+Tab = \t|{espacio}{4}
+Cadena   = \".*\"
+%{
+    public String lexeme;
+%}
+
+%init{
+    
+    if(direccion.isEmpty())
+        this.direccion="tokens.txt";
+    else
+        this.direccion=direccion+File.separator+"tokens.txt";
+    bw = new BufferedWriter(new FileWriter(this.direccion));
+%init}
+%initthrow IOException
+%ctorarg String direccion
+%unicode
+%line
+%column
+%cup
+%eofval{
+  bw.close();
+  System.out.println("Fin de archivo encontrado");
+  return new java_cup.runtime.Symbol(sym.EOF);
+%eofval}
+%eofclose
+%%
+
+/*  PALABRA RESERVADAS */
+"entero"        {escribir(1,"entero");return new Symbol(sym.Entero, yytext(), yyline, yycolumn, getTab());}  
+"real"          {escribir(1,"real");return new Symbol(sym.Real, ytext(), yyline, yycolumn, getTab());} 
+"cadena"        {escribir(1,"cadena");return new java_cup.runtime.Symbol(sym.Cadena, yytext(), yyline, yycolumn, getTab());} 
+"boleano"       {escribir(1,"boleano");return new java_cup.runtime.Symbol(sym.Boleano, yytext(), yyline, yycolumn, getTab());} 
+"nulo"          {escribir(1,"nulo");return new java_cup.runtime.Symbol(sym.Nulo, yytext(), yyline, yycolumn, getTab());} 
+"si"            {escribir(1,"si");return new java_cup.runtime.Symbol(sym.Si, yytext(), yyline, yycolumn, getTab());} 
+"entonces"      {escribir(1,"entonces");return new java_cup.runtime.Symbol(sym.Entonces, yytext(), yyline, yycolumn, getTab());} 
+"sino"          {escribir(1,"sino");return new java_cup.runtime.Symbol(sym.Sino, yytext(), yyline, yycolumn, getTab());} 
+"devolver"      {escribir(1,"devolver");return new java_cup.runtime.Symbol(sym.Devolver, yytext(), yyline, yycolumn, getTab());} 
+"falso"         {escribir(1,"falso");return new java_cup.runtime.Symbol(sym.Falso, yytext(), yyline, yycolumn, getTab());} 
+"verdadero"     {escribir(1,"true");return new java_cup.runtime.Symbol(sym.Verdadero, yytext(), yyline, yycolumn, getTab());} 
+"desde"         {escribir(1,"desde");return new java_cup.runtime.Symbol(sym.Desde, yytext(), yyline, yycolumn, getTab());} 
+"mientras"      {escribir(1,"mientras");return java_cup.runtime.Symbol(sym.Mientras, yytext(), yyline, yycolumn, getTab());} 
+"incrementar"   {escribir(1,"incrementar");return new java_cup.runtime.Symbol(sym.Incrementar, yytext(), yyline, yycolumn, getTab());} 
+"decrementar"   {escribir(1,"decrementar");return new java_cup.runtime.Symbol(sym.Decrementar, yytext(), yyline, yycolumn, getTab());} 
+"hacer"         {escribir(1,"hacer");return new java_cup.runtime.Symbol(sym.Hacer, yytext(), yyline, yycolumn, getTab());} 
+"escribir"      {escribir(1,"escribir");return new java_cup.runtime.Symboll(sym.Escribir, yytext(), yyline, yycolumn, getTab());} 
+"leer"          {escribir(1,"leer");return new java_cup.runtime.Symbol(sym.Leer, yytext(), yyline, yycolumn, getTab());} 
+"clase"         {escribir(1,"clase");return new java_cup.runtime.Symbol(sym.Clase, yytext(), yyline, yycolumn, getTab());} 
+"extiende"      {escribir(1,"extiende");return java_cup.runtime.Symbol(sym.Extiende, yytext(), yyline, yycolumn, getTab());} 
+"incluir"       {escribir(1,"incluir");return new java_cup.runtime.Symbol(sym.Incluir, yytext(), yyline, yycolumn, getTab());}                             
+"propiedades"   {escribir(1,"proiedades");return new java_cup.runtime.Symbol(sym.Propiedades, yytext(), yyline, yycolumn, getTab());} 
+"metodos"       {escribir(1,"metodos");return new java_cup.runtime.Symbol(sym.Metodos, yytext(), yyline, yycolumn, getTab());} 
+"publicas"      {escribir(1,"publicas");return new java_cup.runtime.Symbol(sym.Publicas, yytext(), yyline, yycolumn, getTab());} 
+"privadas"      {escribir(1,"privadas");return new java_cup.runtime.Symbol(sym.Privadas, yytext(), yyline, yycolumn, getTab());} 
+"protegidas"    {escribir(1,"protegidas");return new java_cup.runtime.Symbol(sym.Protegidas, yytext(), yyline, yycolumn, getTab());} 
+"Principal"     {escribir(1,"Principal");return new java_cup.runtime.Symbol(sym.Principal, yytext(), yyline, yycolumn, getTab());} 
+"eliminar"      {escribir(1,"eliminar");return new java_cup.runtime.Symbol(sym.Eliminar,  yytext(), yyline, yycolumn, getTab());}                             
+"instanciar"    {escribir(1,"instanciar");return new java_cup.runtime.Symbol(sym.Instanciar, yytext(), yyline, yycolumn, getTab());} 
+"constructor"   {escribir(1,"constructor");return new java_cup.runtime.Symbol(sym.Constructor, yytext(), yyline, yycolumn, getTab());} 
+"destructor"    {escribir(1,"destructor");return new java_cup.runtime.Symbol(sym.Deconstructor, yytext(), yyline, yycolumn, getTab());} 
+
+/*      OPERADORES     */
+"="             {escribir(2,"=");return new java_cup.runtime.Symbol(sym.Igual, yytext(), yyline, yycolumn, getTab());} 
+"+"             {escribir(2,"+");return new java_cup.runtime.Symbol(sym.Suma, yytext(), yyline, yycolumn, getTab());} 
+"-"             {escribir(2,"-");return new java_cup.runtime.Symbol(sym.Resta, yytext(), yyline, yycolumn, getTab());} 
+"*"             {escribir(2,"*");return new java_cup.runtime.Symbol(sym.Multiplicacion, yytext(), yyline, yycolumn, getTab());} 
+"/"             {escribir(2,"/");return new java_cup.runtime.Symbol(sym.Division, yytext(), yyline, yycolumn, getTab());} 
+"%"             {escribir(2,"%");return new java_cup.runtime.Symboll(sym.Modulo, yytext(), yyline, yycolumn, getTab());} 
+"^"             {escribir(2,"^");return new java_cup.runtime.Symbol(sym.Exponenciacion, yytext(), yyline, yycolumn, getTab());} 
+"++"            {escribir(2,"++");return new java_cup.runtime.Symbol(sym.Incremento, yytext(), yyline, yycolumn, getTab());} 
+"--"            {escribir(2,"--");return new java_cup.runtime.Symbol(sym.Decremento, yytext(), yyline, yycolumn, getTab());} 
+"=="            {escribir(2,"==");return new java_cup.runtime.Symbol(sym.Comparador, yytext(), yyline, yycolumn, getTab());} 
+"!="            {escribir(2,"!=");return new java_cup.runtime.Symbol(sym.Diferente, yytext(), yyline, yycolumn, getTab());} 
+"<="            {escribir(2,"<=");return new java_cup.runtime.Symbol(sym.MenorIgual, yytext(), yyline, yycolumn, getTab());} 
+">="            {escribir(2,">=");return new java_cup.runtime.Symbol(sym.MayorIgual, yytext(), yyline, yycolumn, getTab());} 
+">"             {escribir(2,">");return new java_cup.runtime.Symbol(sym.Mayor, yytext(), yyline, yycolumn, getTab());} 
+"<"             {escribir(2,"<");return new java_cup.runtime.Symbol(sym.Menor, yytext(), yyline, yycolumn, getTab());} 
+"AND"           {escribir(1,"AND");return new java_cup.runtime.Symbol(sym.And, yytext(), yyline, yycolumn, getTab());} 
+"OR"            {escribir(1,"OR");return new java_cup.runtime.Symbol(sym.Or, yytext(), yyline, yycolumn, getTab());} 
+
+
+/*        OTROS        */
+":"             {escribir(3,":");return new java_cup.runtime.Symbol(sym.DosPuntos, yytext(), yyline, yycolumn, getTab());} 
+";"             {escribir(3,";");return new java_cup.runtime.Symbol(sym.PuntoComa, yytext(), yyline, yycolumn, getTab());} 
+"("             {escribir(3,"(");return new java_cup.runtime.Symbol(sym.ParentesisA, yytext(), yyline, yycolumn, getTab());} 
+")"             {escribir(3,")");return new java_cup.runtime.Symbol(sym.ParentesisC, yytext(), yyline, yycolumn, getTab());} 
+"["             {escribir(3,"[");return new java_cup.runtime.Symbol(sym.CorcheteA, yytext(), yyline, yycolumn, getTab());} 
+"]"             {escribir(3,"]");return new java_cup.runtime.Symboll(sym.CorcheteC, yytext(), yyline, yycolumn, getTab());} 
+"{"             {escribir(3,"[");return new java_cup.runtime.Symbol(sym.LlaveA, yytext(), yyline, yycolumn, getTab());} 
+"}"             {escribir(3,"]");return new java_cup.runtime.Symbol(sym.LlaveC, yytext(), yyline, yycolumn, getTab());} 
+".,"            {escribir(3,",");return new java_cup.runtime.Symbol(sym.Coma, yytext(), yyline, yycolumn, getTab())} 
+
+/*Numeros, Identificadores y Cadenas*/     
+{Numero}        {escribir(4,yytext());return new java_cup.runtime.Symbol(sym.NumEntero, yytext(), yyline, yycolumn, getTab());} 
+{Real}          {escribir(5,yytext());return new java_cup.runtime.Symbol(sym.NumReal, yytext(), yyline, yycolumn, getTab());} 
+{L1}({L1}|{Numero})*         {escribir(6,yytext());return new java_cup.runtime.Symbol(sym.Identificador, yytext(), yyline, yycolumn, getTab());} 
+{L2}({L1}|{Numero})*         {escribir(7,yytext());return new java_cup.runtime.Symbol(sym.IdClase, yytext(), yyline, yycolumn, getTab());} 
+{Cadena}        {escribir(8,yytext());return new java_cup.runtime.Symbol(sym.Cadena, yytext(), yyline, yycolumn, getTab());} 
+{Tab}           {escribir(9,yytext());return new java_cup.runtime.Symbol(sym.Tabulador, yytext(), yyline, yycolumn, getTab());} 
+"."             {escribir(10,yytext());return new java_cup.runtime.Symbol(sym.Punto, yytext(), yyline, yycolumn, getTab());} 
+.               {System.err.println("caracter invalido \"" + yytext() + "\"["+ yyline + ":"+ yycolumn + ":"+ yychar + "]");
+                    return new Symbol(sym.error);}
